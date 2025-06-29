@@ -31,9 +31,6 @@ def pd_score(all_piece : int ) -> int:
             all_piece += 1
             pd_score += 25
     return pd_score
-
-dict1 = {}
-dict2 = {}
 try:
     level = int(input('目前忍法帖等级：'))
 except ValueError:

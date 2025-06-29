@@ -361,7 +361,7 @@
                 
                 <div class="form-group">
                     <label for="level"><i class="fas fa-level-up-alt"></i> 目前忍法帖等级</label>
-                    <input type="number" id="level" min="0" max="500" placeholder="请输入当前等级" value="180">
+                    <input type="number" id="level" min="0" max="500" placeholder="请输入当前等级" value="">
                     <small>注：等级必须大于160才能继续计算</small>
                 </div>
                 
@@ -395,7 +395,7 @@
                 
                 <div class="form-group">
                     <label for="piece"><i class="fas fa-puzzle-piece"></i> 目前拥有片数</label>
-                    <input type="number" id="piece" min="0" max="100" placeholder="请输入当前碎片数量" value="65">
+                    <input type="number" id="piece" min="0" max="100" placeholder="请输入当前碎片数量" value="">
                 </div>
                 
                 <button id="calculate-btn">
@@ -511,21 +511,19 @@
         }
 
         // 主计算函数
-        function calculate() {
-            // 获取输入值
+        function calculate(isInit = false) {
             const level = parseInt(document.getElementById('level').value) || 0;
+            const piece = parseInt(document.getElementById('piece').value) || 0;
             const judge = document.querySelector('input[name="judge"]:checked').value;
             const judge2 = document.querySelector('input[name="judge2"]:checked').value;
-            const piece = parseInt(document.getElementById('piece').value) || 0;
             
             // 验证输入
-            if (!level || !piece) {
-                showError("请输入有效的忍法帖等级和碎片数量");
+            if (isNaN(level) || isNaN(piece)) {
+                if (!isInit) showError("请输入有效的忍法帖等级和碎片数量");
                 return;
             }
-            
             if (level <= 160) {
-                showError("您的等级不够,给爷爬");
+                if (!isInit) showError("您的等级不够,给爷爬");
                 return;
             }
             
@@ -627,20 +625,13 @@
 
         // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', () => {
-            // 添加计算按钮事件
-            document.getElementById('calculate-btn').addEventListener('click', calculate);
-            
-            // 初始计算
-            setTimeout(calculate, 300);
-            
-            // 添加输入框自动计算
+            document.getElementById('calculate-btn').addEventListener('click', () => calculate(false));
+            // setTimeout(() => calculate(true), 300); // 如果需要初始填充默认结果
             document.querySelectorAll('input').forEach(input => {
-                input.addEventListener('change', calculate);
+                input.addEventListener('change', () => calculate(false));
             });
-            
-            // 添加输入框自动计算（对于单选按钮）
             document.querySelectorAll('input[type="radio"]').forEach(radio => {
-                radio.addEventListener('change', calculate);
+                radio.addEventListener('change', () => calculate(false));
             });
         });
     </script>

@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>忍法帖计算器</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥷</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+        }
+        
+        :root {
+            --primary: #8e2de2;
+            --primary-dark: #4a00e0;
+            --secondary: #ffd700;
+            --danger: #ff3860;
+            --success: #23d160;
+            --dark: #1a2a6c;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--dark), #b21f1f, var(--dark));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        
+        header {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .ninja-icon {
+            position: absolute;
+            top: 0;
+            right: 20px;
+            font-size: 3.5rem;
+            color: var(--secondary);
+            transform: rotate(-15deg);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        
+        .domain-info {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0;
+        }
+        
+        .input-section, .result-section {
+            padding: 25px;
+            flex: 1;
+            min-width: 100%;
+        }
+        
+        .input-section {
+            background: white;
+        }
+        
+        .result-section {
+            background: #f8f9ff;
+            border-top: 2px dashed #e0e0ff;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 12px;
+            color: var(--primary);
+            font-size: 1.4rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 1rem;
+        }
+        
+        input[type="number"], select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        input[type="number"]:focus, select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(142, 45, 226, 0.2);
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 5px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .radio-option input {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .radio-option label {
+            font-weight: normal;
+            margin-bottom: 0;
+            font-size: 1rem;
+        }
+        
+        button {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 700;
+            transition: all 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 6px 15px rgba(142, 45, 226, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(142, 45, 226, 0.5);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 15px;
+        }
+        
+        .result-item {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid var(--primary);
+            transition: transform 0.3s;
+        }
+        
+        .result-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .result-item h3 {
+            font-size: 0.95rem;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+        
+        .result-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+        
+        .money-item {
+            background: linear-gradient(to right, var(--secondary), #ffa500);
+            color: #333;
+            border-left: 5px solid #e69500;
+        }
+        
+        .money-item .result-value {
+            color: #b22222;
+            font-size: 2rem;
+        }
+        
+        .error {
+            color: var(--danger);
+            background: #ffeef0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 5px solid var(--danger);
+            display: none;
+            font-size: 1rem;
+        }
+        
+        .deployment-info {
+            background: #e9ecef;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #f1f1f1;
+            color: var(--gray);
+            font-size: 0.9rem;
+            border-top: 1px solid #ddd;
+        }
+        
+        /* 响应式设计 */
+        @media (min-width: 768px) {
+            .input-section, .result-section {
+                min-width: 50%;
+            }
+            
+            .result-section {
+                border-top: none;
+                border-left: 2px dashed #e0e0ff;
+            }
+            
+            .result-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .money-item {
+                grid-column: span 2;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .result-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .money-item {
+                grid-column: span 3;
+            }
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result-item {
+            animation: fadeIn 0.4s ease forwards;
+            animation-delay: calc(var(--index) * 0.1s);
+            opacity: 0;
+        }
+        
+        /* 输入框数字键盘适配 */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="ninja-icon">
+                    <i class="fas fa-user-ninja"></i>
+                </div>
+                <h1>忍法帖计算器</h1>
+                <p class="subtitle">精确计算忍法帖等级、碎片和所需费用，轻松规划您的忍者之路</p>
+                <div class="domain-info">
+                    <i class="fas fa-globe"></i> 当前网址: <span id="current-url">loading...</span>
+                </div>
+            </div>
+        </header>
+        
+        <div class="content">
+            <div class="input-section">
+                <div class="section-title">
+                    <i class="fas fa-calculator"></i>输入参数
+                </div>
+                
+                <div class="form-group">
+                    <label for="level"><i class="fas fa-level-up-alt"></i> 目前忍法帖等级</label>
+                    <input type="number" id="level" min="0" max="500" placeholder="请输入当前等级" value="180">
+                    <small>注：等级必须大于160才能继续计算</small>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-exchange-alt"></i> 本轮积分是否换完？</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="judge-y" name="judge" value="y" checked>
+                            <label for="judge-y">是</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="judge-n" name="judge" value="n">
+                            <label for="judge-n">否</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-mask"></i> 目标忍者</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="judge2-o" name="judge2" value="o">
+                            <label for="judge2-o">老秘藏忍法帖</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="judge2-n" name="judge2" value="n" checked>
+                            <label for="judge2-n">新秘藏忍法帖</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="piece"><i class="fas fa-puzzle-piece"></i> 目前拥有片数</label>
+                    <input type="number" id="piece" min="0" max="100" placeholder="请输入当前碎片数量" value="65">
+                </div>
+                
+                <button id="calculate-btn">
+                    <i class="fas fa-bolt"></i> 开始计算
+                </button>
+                
+                <div class="error" id="error-msg">
+                    错误信息将显示在这里
+                </div>
+            </div>
+            
+            <div class="result-section">
+                <div class="section-title">
+                    <i class="fas fa-chart-bar"></i>计算结果
+                </div>
+                
+                <div class="result-grid" id="results" style="display:none;">
+                    <div class="result-item" style="--index:0">
+                        <h3><i class="fas fa-coins"></i> 当前积分</h3>
+                        <div class="result-value" id="score">0</div>
+                    </div>
+                    
+                    <div class="result-item" style="--index:1">
+                        <h3><i class="fas fa-exchange-alt"></i> 可兑换片数</h3>
+                        <div class="result-value" id="piece2">0</div>
+                    </div>
+                    
+                    <div class="result-item" style="--index:2">
+                        <h3><i class="fas fa-puzzle-piece"></i> 兑换前总片数</h3>
+                        <div class="result-value" id="piece">0</div>
+                    </div>
+                    
+                    <div class="result-item" style="--index:3">
+                        <h3><i class="fas fa-box-open"></i> 兑换后总片数</h3>
+                        <div class="result-value" id="all_piece">0</div>
+                    </div>
+                    
+                    <div class="result-item" style="--index:4">
+                        <h3><i class="fas fa-tasks"></i> 仍需片数</h3>
+                        <div class="result-value" id="rx_piece">0</div>
+                    </div>
+                    
+                    <div class="result-item" style="--index:5">
+                        <h3><i class="fas fa-level-up-alt"></i> 仍需等级</h3>
+                        <div class="result-value" id="rx_level">0</div>
+                    </div>
+                    
+                    <div class="result-item" style="--index:6">
+                        <h3><i class="fas fa-bolt"></i> 仍需积分</h3>
+                        <div class="result-value" id="rx_score">0</div>
+                    </div>
+                    
+                    <div class="result-item money-item" style="--index:7">
+                        <h3><i class="fas fa-money-bill-wave"></i> 补满需要金额</h3>
+                        <div class="result-value" id="money">0 元</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="deployment-info">
+            <p><i class="fas fa-server"></i> 此应用已部署在静态网站托管服务上 | 支持所有设备访问</p>
+        </div>
+        
+        <footer>
+            <p>© 2023 忍法帖计算器 | 本工具仅用于游戏规划参考，实际数据以游戏内为准</p>
+            <p>永久访问地址: <span id="permanent-url">https://ninja-calculator.example.com</span></p>
+        </footer>
+    </div>
+
+    <script>
+        // 获取并显示当前URL
+        document.getElementById('current-url').textContent = window.location.href;
+        document.getElementById('permanent-url').textContent = window.location.href;
+        
+        // 计算所需金额函数
+        function calcMoney(rxLevel) {
+            if (!rxLevel || rxLevel <= 0) {
+                return 0;
+            } else if (rxLevel <= 150) {
+                const pdLevel = Math.floor(rxLevel / 50);
+                return pdLevel * 198;
+            } else {
+                const pdLevel = rxLevel - 150;
+                return (3 * 198) + pdLevel * 10;
+            }
+        }
+
+        // 计算兑换整卡所需积分
+        function pdScore(allPiece) {
+            let score = 0;
+            let current = allPiece;
+            
+            while (current < 100) {
+                if (current >= 80) {
+                    score += 50;
+                    current += 1;
+                } else {
+                    current += 1;
+                    score += 25;
+                }
+            }
+            
+            return score;
+        }
+
+        // 主计算函数
+        function calculate() {
+            // 获取输入值
+            const level = parseInt(document.getElementById('level').value) || 0;
+            const judge = document.querySelector('input[name="judge"]:checked').value;
+            const judge2 = document.querySelector('input[name="judge2"]:checked').value;
+            const piece = parseInt(document.getElementById('piece').value) || 0;
+            
+            // 验证输入
+            if (!level || !piece) {
+                showError("请输入有效的忍法帖等级和碎片数量");
+                return;
+            }
+            
+            if (level <= 160) {
+                showError("您的等级不够,给爷爬");
+                return;
+            }
+            
+            // 隐藏错误信息
+            document.getElementById('error-msg').style.display = 'none';
+            
+            let score, piece2, all_piece, rx_score, rx_level, rx_piece, money;
+            
+            // 计算当前积分
+            if (judge === 'y') {
+                score = 0;
+            } else {
+                score = (level - 160) * 10;
+            }
+            
+            // 根据忍者类型计算
+            if (judge2 === 'n') { // 新秘藏忍法帖
+                piece2 = Math.floor(score / 15);
+                all_piece = piece + piece2;
+                
+                if (all_piece < 100) {
+                    rx_score = 15 * (100 - all_piece);
+                    rx_level = Math.floor(rx_score / 10);
+                } else {
+                    rx_score = 0;
+                    rx_level = 0;
+                }
+                
+                money = calcMoney(rx_level);
+                rx_piece = Math.max(0, 100 - all_piece);
+            } else { // 老秘藏忍法帖
+                if (piece < 80) {
+                    const neededScoreTo80 = (80 - piece) * 25;
+                    
+                    if (score < neededScoreTo80) {
+                        piece2 = Math.floor(score / 25);
+                        all_piece = piece + piece2;
+                        rx_score = pdScore(all_piece);
+                        rx_level = Math.floor(rx_score / 10);
+                    } else {
+                        const remainingScore = score - neededScoreTo80;
+                        piece2 = (80 - piece) + Math.floor(remainingScore / 50);
+                        all_piece = 80 + Math.floor(remainingScore / 50);
+                        rx_score = pdScore(all_piece);
+                        rx_level = Math.floor(rx_score / 10);
+                    }
+                } else if (piece >= 80 && piece < 100) {
+                    piece2 = Math.floor(score / 50);
+                    all_piece = piece + piece2;
+                    rx_score = pdScore(all_piece);
+                    rx_level = Math.floor(rx_score / 10);
+                } else {
+                    piece2 = 0;
+                    all_piece = piece;
+                    rx_score = 0;
+                    rx_level = 0;
+                }
+                
+                money = calcMoney(rx_level);
+                rx_piece = Math.max(0, 100 - all_piece);
+            }
+            
+            // 显示结果
+            displayResults({
+                level: level,
+                score: score,
+                piece: piece,
+                piece2: piece2,
+                all_piece: all_piece,
+                rx_piece: rx_piece,
+                rx_level: rx_level,
+                rx_score: rx_score,
+                money: money
+            });
+        }
+
+        // 显示计算结果
+        function displayResults(result) {
+            document.getElementById('score').textContent = result.score;
+            document.getElementById('piece2').textContent = result.piece2;
+            document.getElementById('piece').textContent = result.piece;
+            document.getElementById('all_piece').textContent = result.all_piece;
+            document.getElementById('rx_piece').textContent = result.rx_piece;
+            document.getElementById('rx_level').textContent = result.rx_level;
+            document.getElementById('rx_score').textContent = result.rx_score;
+            document.getElementById('money').textContent = result.money + ' 元';
+            
+            document.getElementById('results').style.display = 'grid';
+        }
+
+        // 显示错误信息
+        function showError(message) {
+            const errorElem = document.getElementById('error-msg');
+            errorElem.textContent = message;
+            errorElem.style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 添加计算按钮事件
+            document.getElementById('calculate-btn').addEventListener('click', calculate);
+            
+            // 初始计算
+            setTimeout(calculate, 300);
+            
+            // 添加输入框自动计算
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('change', calculate);
+            });
+            
+            // 添加输入框自动计算（对于单选按钮）
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', calculate);
+            });
+        });
+    </script>
+</body>
+</html>

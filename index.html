@@ -415,42 +415,42 @@
                 <div class="result-grid" id="results" style="display:none;">
                     <div class="result-item" style="--index:0">
                         <h3><i class="fas fa-coins"></i> 当前积分</h3>
-                        <div class="result-value" id="score">0</div>
+                        <div class="result-value" id="result-score">0</div>
                     </div>
                     
                     <div class="result-item" style="--index:1">
                         <h3><i class="fas fa-exchange-alt"></i> 可兑换片数</h3>
-                        <div class="result-value" id="piece2">0</div>
+                        <div class="result-value" id="result-piece2">0</div>
                     </div>
                     
                     <div class="result-item" style="--index:2">
                         <h3><i class="fas fa-puzzle-piece"></i> 兑换前总片数</h3>
-                        <div class="result-value" id="piece">0</div>
+                        <div class="result-value" id="result-piece">0</div>
                     </div>
                     
                     <div class="result-item" style="--index:3">
                         <h3><i class="fas fa-box-open"></i> 兑换后总片数</h3>
-                        <div class="result-value" id="all_piece">0</div>
+                        <div class="result-value" id="result-all-piece">0</div>
                     </div>
                     
                     <div class="result-item" style="--index:4">
                         <h3><i class="fas fa-tasks"></i> 仍需片数</h3>
-                        <div class="result-value" id="rx_piece">0</div>
+                        <div class="result-value" id="result-rx-piece">0</div>
                     </div>
                     
                     <div class="result-item" style="--index:5">
                         <h3><i class="fas fa-level-up-alt"></i> 仍需等级</h3>
-                        <div class="result-value" id="rx_level">0</div>
+                        <div class="result-value" id="result-rx-level">0</div>
                     </div>
                     
                     <div class="result-item" style="--index:6">
                         <h3><i class="fas fa-bolt"></i> 仍需积分</h3>
-                        <div class="result-value" id="rx_score">0</div>
+                        <div class="result-value" id="result-rx-score">0</div>
                     </div>
                     
                     <div class="result-item money-item" style="--index:7">
                         <h3><i class="fas fa-money-bill-wave"></i> 补满需要金额</h3>
-                        <div class="result-value" id="money">0 元</div>
+                        <div class="result-value" id="result-money">0 元</div>
                     </div>
                 </div>
             </div>
@@ -584,7 +584,7 @@
             displayResults({
                 level: level,
                 score: score,
-                piece: piece,
+                piece: piece, // 用户输入的当前碎片数量
                 piece2: piece2,
                 all_piece: all_piece,
                 rx_piece: rx_piece,
@@ -596,14 +596,15 @@
 
         // 显示计算结果
         function displayResults(result) {
-            document.getElementById('score').textContent = result.score;
-            document.getElementById('piece2').textContent = result.piece2;
-            document.getElementById('piece').textContent = result.piece;
-            document.getElementById('all_piece').textContent = result.all_piece;
-            document.getElementById('rx_piece').textContent = result.rx_piece;
-            document.getElementById('rx_level').textContent = result.rx_level;
-            document.getElementById('rx_score').textContent = result.rx_score;
-            document.getElementById('money').textContent = result.money + ' 元';
+            // 修复问题：使用正确的结果ID
+            document.getElementById('result-score').textContent = result.score;
+            document.getElementById('result-piece2').textContent = result.piece2;
+            document.getElementById('result-piece').textContent = result.piece; // 显示用户输入的碎片数量
+            document.getElementById('result-all-piece').textContent = result.all_piece;
+            document.getElementById('result-rx-piece').textContent = result.rx_piece;
+            document.getElementById('result-rx-level').textContent = result.rx_level;
+            document.getElementById('result-rx-score').textContent = result.rx_score;
+            document.getElementById('result-money').textContent = result.money + ' 元';
             
             document.getElementById('results').style.display = 'grid';
         }

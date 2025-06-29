@@ -476,26 +476,20 @@
         function calcMoney(rxLevel) {
             if (!rxLevel || rxLevel <= 0) {
                 return 0;
-            } 
-              else if (100 < rxLevel < 150) {
-                return (2 * 198) + 150 * (rxLevel - 100);
-              }
-              else if rxLevel = 150{
-                return 3 * 198
-              }
-              else if (50 < rxlevel < 100)  {
-                return 198 + 150 * (rxLevel - 100);
-              }
-              else if rxLevel = 100{
-                return 2 * 198
-              }
-              else if (0 < rxlevel <= 50)  {
+            } else if (rxLevel > 100 && rxLevel < 150) {
+                return (2 * 198) + 10 * (rxLevel - 100);
+            } else if (rxLevel === 150) {
+                return 3 * 198;
+            } else if (rxLevel > 50 && rxLevel < 100) {
+                return 198 + 10 * (rxLevel - 50);
+            } else if (rxLevel === 100) {
+                return 2 * 198;
+            } else if (rxLevel > 0 && rxLevel <= 50) {
                 return 198;
-              }
-              else {
+            } else {
                 const pdLevel = rxLevel - 150;
                 return (3 * 198) + pdLevel * 10;
-              }
+            }
         }
 
         // 计算兑换整卡所需积分

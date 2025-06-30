@@ -461,13 +461,38 @@
         </div>
         
         <footer>
-            <p>© 2025 LeaF-7 保留所有权利，未经授权严禁转载。</p>
-            <p>忍法帖计算器 | 本工具仅用于游戏规划参考，实际数据以游戏内为准.</p>
-            <p>永久访问地址: <span id="permanent-url">https://ninja-calculator.example.com</span></p>
+            <p id="copyrightStatement">
+                © 2025<span id="currentYear"></span> 
+                本网站作者 版权所有 |
+                未经许可，禁止任何商业用途，保留所有权利。
+            </p>
+            
+            <p>
+                忍法帖计算器 | 为第三方工具，数据仅供参考，实际结果请以游戏内为准。
+            </p>
+            <p>
+                本工具与游戏官方无关，所用游戏名称及素材版权归原厂商所有。
+            </p>
+            <p>
+                永久访问地址: <span id="permanent-url">https://ninja-calculator.example.com</span>
+            </p>
         </footer>
     </div>
 
     <script>
+        // 现代、安全的 DOM 操作方法
+            (function() {
+                const startYear = 2025; // 网站上线或内容创建的起始年份
+                const currentYear = new Date().getFullYear();
+                const yearSpan = document.getElementById('currentYear');
+
+            // 逻辑判断：当前年 > 起始年 才显示横杠和当前年，否则清空 span
+            if (currentYear > startYear) {
+                yearSpan.textContent = `-${currentYear}`;
+            } else {
+                yearSpan.textContent = '';
+            }
+        })();
         // 获取并显示当前URL
         document.getElementById('current-url').textContent = window.location.href;
         document.getElementById('permanent-url').textContent = window.location.href;
